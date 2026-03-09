@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    show-sql: false
+  datasource:
+    hikari:
+      maximum-pool-size: 50
+
+logging:
+  level:
+    root: WARN
+    io.authforge: INFO
+
+server:
+  ssl:
+    enabled: false

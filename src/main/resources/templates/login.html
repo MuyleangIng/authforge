@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="'Sign In — ' + ${realmDisplayName ?: realm}">Sign In — AuthForge</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f1117;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #1a1d2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.5);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .logo h1 { font-size: 1.75rem; font-weight: 700; color: #7c3aed; letter-spacing: -0.5px; }
+        .logo p  { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+
+        .realm-badge {
+            display: inline-block;
+            background: #2d3748;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+
+        label { display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 6px; }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            background: #0f1117;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            padding: 0.625rem 0.875rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #7c3aed; }
+
+        .field { margin-bottom: 1.25rem; }
+
+        .btn {
+            width: 100%;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        .btn:hover { background: #6d28d9; }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .footer-links a { color: #7c3aed; text-decoration: none; }
+        .footer-links a:hover { text-decoration: underline; }
+
+        .error-msg {
+            background: #450a0a;
+            border: 1px solid #7f1d1d;
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">
+        <h1>AuthForge</h1>
+        <p>Identity &amp; Access Management</p>
+    </div>
+
+    <div style="text-align:center">
+        <span class="realm-badge" th:text="'Realm: ' + ${realm}">Realm: master</span>
+    </div>
+
+    <div class="error-msg" th:if="${error}" th:text="${error}"></div>
+
+    <form th:action="@{/login/submit}" method="post">
+        <input type="hidden" name="realm"        th:value="${realm}"/>
+        <input type="hidden" name="client_id"    th:value="${clientId}"/>
+        <input type="hidden" name="redirect_uri" th:value="${redirectUri}"/>
+        <input type="hidden" name="scope"        th:value="${scope}"/>
+        <input type="hidden" name="state"        th:value="${state}"/>
+
+        <div class="field">
+            <label for="username">Username or Email</label>
+            <input id="username" name="username" type="text" autocomplete="username"
+                   placeholder="Enter your username" required/>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password"
+                   placeholder="Enter your password" required/>
+        </div>
+
+        <button class="btn" type="submit">Sign In</button>
+    </form>
+
+    <div class="footer-links">
+        <span th:if="${registrationAllowed != false}">
+            Don't have an account?
+            <a th:href="@{/register(realm=${realm},redirect_uri=${redirectUri})}">Register</a>
+        </span>
+    </div>
+</div>
+</body>
+</html>

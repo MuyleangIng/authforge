@@ -1,0 +1,71 @@
+type Query {
+    realm(name: String!): Realm
+    realms: [Realm!]!
+    user(realmName: String!, id: ID!): User
+    users(realmName: String!): [User!]!
+    roles(realmName: String!): [Role!]!
+    sessions(realmName: String!): [Session!]!
+    analyticsOverview(realmName: String!): AnalyticsOverview
+}
+
+type Mutation {
+    createRealm(name: String!, displayName: String): Realm
+    deleteRealm(name: String!): Boolean
+    createUser(realmName: String!, username: String!, email: String!, password: String!): User
+    deleteUser(realmName: String!, id: ID!): Boolean
+    createRole(realmName: String!, name: String!, description: String): Role
+    deleteRole(realmName: String!, id: ID!): Boolean
+    assignRole(realmName: String!, userId: ID!, roleId: ID!): Boolean
+    revokeSession(realmName: String!, id: ID!): Boolean
+}
+
+type Realm {
+    id: ID!
+    name: String!
+    displayName: String
+    enabled: Boolean
+    registrationAllowed: Boolean
+    accessTokenLifespan: Int
+    refreshTokenLifespan: Int
+    createdAt: String
+}
+
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    firstName: String
+    lastName: String
+    enabled: Boolean
+    emailVerified: Boolean
+    roles: [String!]
+    lastLogin: String
+    createdAt: String
+}
+
+type Role {
+    id: ID!
+    name: String!
+    description: String
+    isComposite: Boolean
+    clientRole: Boolean
+}
+
+type Session {
+    id: ID!
+    userId: ID!
+    clientId: String
+    ipAddress: String
+    expiresAt: String
+    createdAt: String
+}
+
+type AnalyticsOverview {
+    totalUsers: Int
+    activeUsers: Int
+    activeSessions: Int
+    totalClients: Int
+    loginCount24h: Int
+    failedLoginCount24h: Int
+    newUsersToday: Int
+}

@@ -1,0 +1,89 @@
+spring:
+  application:
+    name: authforge
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authforge
+    username: authforge
+    password: authforge_secret
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""
+      timeout: 2000ms
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: authforge-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+  session:
+    store-type: redis
+    timeout: 30m
+
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+
+  cache:
+    type: redis
+
+authforge:
+  jwt:
+    secret: "CHANGE_ME_IN_PRODUCTION_USE_256_BIT_KEY_ATLEAST_32CHARS"
+    issuer: "http://localhost:8080"
+  admin:
+    default-username: admin
+    default-password: admin
+    default-email: admin@localhost
+  token:
+    cache-ttl: 300
+  cors:
+    allowed-origins: "http://localhost:3000,http://localhost:5173"
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

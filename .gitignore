@@ -1,0 +1,43 @@
+# Build outputs
+/build/
+out/
+target/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle/wrapper/gradle-wrapper.jar
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Environment files
+.env
+.env.*
+
+# Claude / AI notes
+CLAUDE.md
+*.claude.md
+
+# Local config
+local.properties
+
+# Docker
+docker-compose.override.yml
+
+# Node (if you add frontend later)
+node_modules/
+dist/
+
+# Mac
+.AppleDouble
+.LSOverride
